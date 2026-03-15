@@ -42,6 +42,20 @@ An AI-powered stock prediction and trading simulation app built with Flask, feat
 
 5. Open http://127.0.0.1:5000 in your browser
 
+## Deployment to Render (Recommended - Free)
+
+1. Create a Render account at https://render.com
+2. Connect your GitHub account
+3. Click "New +" and select "Web Service"
+4. Connect your PREDICTATOR repository
+5. Configure the service:
+   - **Name**: predictator-app
+   - **Environment**: Python 3
+   - **Build Command**: `pip install -r requirements.txt`
+   - **Start Command**: `python app.py`
+6. Click "Create Web Service"
+7. Your app will be live at the provided URL!
+
 ## Deployment to Heroku
 
 1. Create a Heroku account at https://heroku.com
