@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PREDICTATOR | AI & Trading</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+    <style>
+        body { background-color: #0b0e11; color: #e2e8f0; font-family: sans-serif; overflow: hidden; }
+        ::-webkit-scrollbar { width: 6px; background: #0f172a; }
+        ::-webkit-scrollbar-thumb { background: #334155; border-radius: 3px; }
+        .ticker-item:hover { background: rgba(220, 38, 38, 0.1); border-left: 3px solid #dc2626; cursor: pointer; }
+        
+        /* Toggle Switch */
+        .toggle-checkbox:checked { right: 0; border-color: #22c55e; }
+        .toggle-checkbox:checked + .toggle-label { background-color: #22c55e; }
+        
+        /* Chat Animation */
+        .chat-enter { animation: slideUp 0.3s ease-out forwards; }
+        @keyframes slideUp { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+    </style>
+</head>
+<body class="flex h-screen">
+
+    <div class="w-72 bg-[#0f1216] border-r border-gray-800 flex flex-col hidden md:flex">
+        <div class="p-4 border-b border-gray-800 text-red-600 font-black text-2xl tracking-tighter">PREDICTATOR</div>
+        
+        <div id="sidebar-ai" class="flex-1 overflow-y-auto">
+            <div class="px-6 py-2 text-xs font-bold text-gray-500 mt-2">SPECIAL</div>
+            <div onclick="loadStock('ODDSOCEAN')" class="ticker-item px-6 py-3 border-b border-gray-800/50 flex justify-between bg-red-900/20">
+                <span class="font-bold text-red-500">ODDSOCEAN</span><span class="text-green-400 text-xs font-bold">🚀 MOON</span>
+            </div>
+            <div class="px-6 py-2 text-xs font-bold text-gray-500 mt-2">MARKET</div>
+            <div onclick="loadStock('AAPL')" class="ticker-item px-6 py-3 border-b border-gray-800/50 flex justify-between"><span>AAPL</span><span class="text-green-500 text-xs">BUY</span></div>
+            <div onclick="loadStock('NVDA')" class="ticker-item px-6 py-3 border-b border-gray-800/50 flex justify-between"><span>NVDA</span><span class="text-purple-500 text-xs">AI</span></div>
+            <div onclick="loadStock('SRMIST')" class="ticker-item px-6 py-3 border-b border-gray-800/50 flex justify-between"><span>SRMIST</span><span class="text-yellow-500 text-xs">EDU</span></div>
+        </div>
+
+        <div id="sidebar-trading" class="hidden flex-1 flex flex-col">
+            <div class="p-6 bg-gray-900/50 border-b border-gray-800">
+                <div class="text-xs text-gray-500 font-bold">WALLET</div>
+                <div id="walletDisplay" class="text-2xl text-green-400 font-mono font-bold">$10,000.00</div>
+            </div>
+            <div class="px-6 py-2 text-xs font-bold text-gray-500 mt-2">HOLDINGS</div>
+            <div id="holdingsList" class="flex-1 px-6 overflow-y-auto text-sm space-y-2 py-2">Loading...</div>
+        </div>
+    </div>
+
+    <div class="flex-1 flex flex-col relative">
+        <div class="h-16 border-b border-gray-800 flex items-center px-6 justify-between bg-[#0b0e11]">
+            <div class="flex items-center gap-4">
+                <h1 id="stockName" class="text-2xl font-bold text-white">LOADING...</h1>
+                <span id="stockPrice" class="text-green-500 font-mono text-xl">---</span>
+            </div>
+            
+            <div class="flex items-center gap-4">
+                <input type="text" id="search" placeholder="SYMBOL" class="bg-gray-800 text-white px-3 py-1 rounded w-24 border border-gray-600 uppercase">
+                <button onclick="loadStock(document.getElementById('search').value)" class="bg-blue-600 hover:bg-blue-500 text-white px-4 py-1 rounded font-bold text-sm">SEARCH</button>
+                
+                <div class="flex items-center ml-4 border-l border-gray-700 pl-4">
+                    <span class="text-xs font-bold mr-2 text-red-500" id="modeLabel">AI MODE</span>
+                    <div class="relative inline-block w-10 mr-2 align-middle select-none transition duration-200 ease-in">
+                        <input type="checkbox" name="toggle" id="modeToggle" class="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 appearance-none cursor-pointer" onclick="switchMode()"/>
+                        <label for="toggle" class="toggle-label block overflow-hidden h-6 rounded-full bg-red-900 cursor-pointer"></label>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="flex-1 p-2 relative">
+            <div id="chart" class="w-full h-full"></div>
+            <div id="loader" class="absolute inset-0 bg-black/80 flex flex-col items-center justify-center z-40 hidden">
+                <div class="text-red-500 font-mono animate-pulse text-lg">ANALYZING DATA...</div>
+                <div class="text-gray-500 text-xs mt-2">(Please wait...)</div>
+            </div>
+        </div>
+
+        <div id="panel-ai" class="h-40 border-t border-gray-800 bg-[#0f1216] grid grid-cols-4 divide-x divide-gray-800">
+            <div class="p-4 text-center"><div class="text-gray-500 text-xs">PREDICTION</div><div id="aiPred" class="text-3xl font-mono text-white mt-2">---</div></div>
+            <div class="p-4 text-center"><div class="text-gray-500 text-xs">CONFIDENCE</div><div id="aiConf" class="text-3xl font-mono text-blue-400 mt-2">---</div></div>
+            <div class="p-4 text-center"><div class="text-gray-500 text-xs">SENTIMENT</div><div id="aiSent" class="text-2xl font-bold text-gray-300 mt-2">---</div></div>
+            <div class="p-4 text-center"><div class="text-gray-500 text-xs">MODEL</div><div class="text-xl font-mono text-purple-400 mt-2">RandomForest</div></div>
+        </div>
+
+        <div id="panel-trading" class="hidden h-40 border-t border-gray-800 bg-[#0f1216] flex flex-col items-center justify-center gap-4">
+            <div class="text-green-400 font-bold tracking-widest text-sm">TRADING DESK</div>
+            <div class="flex gap-4">
+                <input type="number" id="qty" value="1" min="1" class="bg-gray-800 text-white px-4 py-2 rounded text-center border border-gray-600 text-xl w-24">
+                <button onclick="trade('buy')" class="bg-green-600 hover:bg-green-500 text-white px-8 py-2 rounded font-bold text-xl shadow-lg hover:scale-105 transition">BUY</button>
+                <button onclick="trade('sell')" class="bg-red-600 hover:bg-red-500 text-white px-8 py-2 rounded font-bold text-xl shadow-lg hover:scale-105 transition">SELL</button>
+            </div>
+        </div>
+    </div>
+
+    <div onclick="toggleChat()" class="fixed bottom-6 right-6 w-14 h-14 bg-blue-600 rounded-full flex items-center justify-center cursor-pointer shadow-lg z-[9999] hover:bg-blue-500 transition hover:scale-110">💬</div>
+    
+    <div id="chatBox" class="hidden fixed bottom-24 right-6 w-80 h-96 bg-[#1a1d21] border border-gray-700 rounded-lg shadow-2xl z-[9999] flex flex-col chat-enter">
+        <div class="h-10 bg-gray-800 border-b border-gray-700 flex items-center px-4 justify-between font-bold text-sm">
+            <span>AI ASSISTANT</span><span onclick="toggleChat()" class="cursor-pointer">✕</span>
+        </div>
+        <div id="messages" class="flex-1 overflow-y-auto p-3 space-y-2 text-sm text-gray-300">
+            <div class="bg-gray-800 p-2 rounded w-fit">Hello! Ask me about stocks.</div>
+        </div>
+        <div class="p-2 border-t border-gray-700 flex">
+            <input id="chatInput" type="text" placeholder="Ask..." class="flex-1 bg-transparent border-none text-white focus:outline-none" onkeypress="if(event.key==='Enter') sendChat()">
+            <button onclick="sendChat()" class="text-blue-500 font-bold ml-2">➤</button>
+        </div>
+    </div>
+
+    <script>
+        let currentPrice = 0;
+        let chartObj = null;
+        let isTradingMode = false;
+        let loadTimeout = null;
+
+        window.onload = function() { loadStock('ODDSOCEAN'); };
+
+        function showLoader() {
+            document.getElementById('loader').classList.remove('hidden');
+            if(loadTimeout) clearTimeout(loadTimeout);
+            // FORCE HIDE after 3 seconds (Prevents getting stuck)
+            loadTimeout = setTimeout(() => { document.getElementById('loader').classList.add('hidden'); }, 3000);
+        }
+
+        async function loadStock(ticker) {
+            if(!ticker) return;
+            ticker = ticker.toUpperCase();
+            showLoader();
+            
+            try {
+                const res = await fetch('/predict', { 
+                    method: 'POST', 
+                    headers: {'Content-Type': 'application/json'}, 
+                    body: JSON.stringify({ticker: ticker}) 
+                });
+                const response = await res.json();
+                
+                if(response.status === 'success') {
+                    const d = response.data;
+                    currentPrice = d.current_price;
+                    document.getElementById('stockName').innerText = d.ticker;
+                    document.getElementById('stockPrice').innerText = "$" + d.current_price;
+                    document.getElementById('aiPred').innerText = "$" + d.prediction;
+                    document.getElementById('aiConf').innerText = d.accuracy + "%";
+                    document.getElementById('aiSent').innerText = d.sentiment;
+                    renderChart(d.chart_data);
+                } else { alert("Error loading stock."); }
+            } catch(e) { console.error(e); }
+            finally { document.getElementById('loader').classList.add('hidden'); }
+        }
+
+        function renderChart(data) {
+            if(chartObj) chartObj.destroy();
+            chartObj = new ApexCharts(document.querySelector("#chart"), {
+                series: [{data: data}],
+                chart: {type: 'candlestick', height: '100%', background: 'transparent', toolbar: {show:false}},
+                theme: {mode: 'dark'},
+                xaxis: {type: 'datetime'},
+                plotOptions: {candlestick: {colors: {upward: '#22c55e', downward: '#ef4444'}}}
+            });
+            chartObj.render();
+        }
+
+        async function trade(action) {
+            const ticker = document.getElementById('stockName').innerText;
+            const qty = document.getElementById('qty').value;
+            
+            const res = await fetch('/trade', { 
+                method: 'POST', 
+                headers: {'Content-Type': 'application/json'}, 
+                body: JSON.stringify({action, ticker, price: currentPrice, quantity: qty}) 
+            });
+            const data = await res.json();
+            alert(data.msg);
+            if(data.status === 'success') updatePortfolio();
+        }
+
+        async function updatePortfolio() {
+            const res = await fetch('/portfolio');
+            const data = await res.json();
+            document.getElementById('walletDisplay').innerText = "$" + data.balance.toFixed(2);
+            
+            const list = document.getElementById('holdingsList');
+            list.innerHTML = "";
+            for(const [t, q] of Object.entries(data.holdings)) {
+                list.innerHTML += `<div class="flex justify-between border-b border-gray-800 pb-1"><span>${t}</span><span class="text-blue-400">${q} Shares</span></div>`;
+            }
+        }
+
+        // --- CHATBOT FUNCTIONS ---
+        function toggleChat() { 
+            console.log("Chat Clicked"); // For debugging
+            document.getElementById('chatBox').classList.toggle('hidden'); 
+        }
+        
+        async function sendChat() {
+            const inp = document.getElementById('chatInput');
+            const msg = inp.value;
+            if(!msg) return;
+            
+            const box = document.getElementById('messages');
+            box.innerHTML += `<div class="text-right mb-2"><span class="bg-blue-900 p-2 rounded inline-block">${msg}</span></div>`;
+            inp.value = "";
+            box.scrollTop = box.scrollHeight;
+            
+            try {
+                const res = await fetch('/chat', { 
+                    method: 'POST', 
+                    headers: {'Content-Type': 'application/json'}, 
+                    body: JSON.stringify({message: msg}) 
+                });
+                const data = await res.json();
+                box.innerHTML += `<div class="text-left mb-2"><span class="bg-gray-800 p-2 rounded inline-block">${data.response}</span></div>`;
+                box.scrollTop = box.scrollHeight;
+            } catch(e) {
+                console.error("Chat Error:", e);
+                box.innerHTML += `<div class="text-left mb-2"><span class="bg-red-900 p-2 rounded inline-block">Error connecting to AI.</span></div>`;
+            }
+        }
+
+        function switchMode() {
+            isTradingMode = !isTradingMode;
+            if(isTradingMode) {
+                document.getElementById('sidebar-ai').classList.add('hidden');
+                document.getElementById('sidebar-trading').classList.remove('hidden');
+                document.getElementById('panel-ai').classList.add('hidden');
+                document.getElementById('panel-trading').classList.remove('hidden');
+                document.getElementById('modeLabel').innerText = "TRADING MODE";
+                document.getElementById('modeLabel').classList.replace('text-red-500', 'text-green-500');
+                updatePortfolio();
+            } else {
+                document.getElementById('sidebar-ai').classList.remove('hidden');
+                document.getElementById('sidebar-trading').classList.add('hidden');
+                document.getElementById('panel-ai').classList.remove('hidden');
+                document.getElementById('panel-trading').classList.add('hidden');
+                document.getElementById('modeLabel').innerText = "AI MODE";
+                document.getElementById('modeLabel').classList.replace('text-green-500', 'text-red-500');
+            }
+        }
+    </script>
+</body>
+</html>

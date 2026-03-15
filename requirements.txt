@@ -1,0 +1,6 @@
+Flask
+yfinance
+pandas
+scikit-learn
+numpy
+textblob
