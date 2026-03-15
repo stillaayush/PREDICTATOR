@@ -42,6 +42,23 @@ An AI-powered stock prediction and trading simulation app built with Flask, feat
 
 5. Open http://127.0.0.1:5000 in your browser
 
+## Deployment to Vercel (Free & GitHub Integrated)
+
+1. Create a Vercel account at https://vercel.com
+2. Connect your GitHub account
+3. Click "New Project" and import your PREDICTATOR repository
+4. Configure the project:
+   - **Framework Preset**: Python
+   - **Root Directory**: ./
+   - **Build Command**: `pip install -r requirements.txt`
+   - **Output Directory**: (leave empty)
+   - **Install Command**: `pip install -r requirements.txt`
+   - **Start Command**: `python app.py`
+5. Add environment variables if needed (none required for this app)
+6. Click "Deploy"
+
+Your app will be live at a URL like `https://predictator.vercel.app`!
+
 ## Deployment to Render (Recommended - Free)
 
 1. Create a Render account at https://render.com
