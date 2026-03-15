@@ -27,6 +27,7 @@ for lib, pip_name in required.items():
     install_and_import(lib, pip_name)
 
 # --- 2. IMPORTS ---
+import os
 from flask import Flask, request, jsonify, render_template
 import yfinance as yf
 import pandas as pd
@@ -190,5 +191,5 @@ def chat():
     return jsonify({'response': resp})
 
 if __name__ == '__main__':
-    print("✅ SERVER RUNNING. Open http://127.0.0.1:5000")
-    app.run(debug=True)
+    port = int(os.environ.get('PORT', 5000))
+    app.run(host='0.0.0.0', port=port)
