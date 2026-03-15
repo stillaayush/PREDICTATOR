@@ -42,24 +42,21 @@ An AI-powered stock prediction and trading simulation app built with Flask, feat
 
 5. Open http://127.0.0.1:5000 in your browser
 
-## Deployment to Vercel (Free & GitHub Integrated)
+## Deployment via GitHub Actions to Heroku (Free Tier)
 
-1. Create a Vercel account at https://vercel.com
-2. Connect your GitHub account
-3. Click "New Project" and import your PREDICTATOR repository
-4. Configure the project:
-   - **Framework Preset**: Python
-   - **Root Directory**: ./
-   - **Build Command**: `pip install -r requirements.txt`
-   - **Output Directory**: (leave empty)
-   - **Install Command**: `pip install -r requirements.txt`
-   - **Start Command**: `python app.py`
-5. Add environment variables if needed (none required for this app)
-6. Click "Deploy"
+1. Create a Heroku account at https://heroku.com
+2. Create a new app in Heroku (note the app name)
+3. Go to your GitHub repository settings > Secrets and variables > Actions
+4. Add these secrets:
+   - `HEROKU_API_KEY`: Your Heroku API key (found in Heroku Account settings)
+   - `HEROKU_APP_NAME`: Your Heroku app name
+   - `HEROKU_EMAIL`: Your Heroku account email
+5. Push any change to the `main` branch, or manually trigger the workflow
+6. The app will be deployed automatically to Heroku!
 
-Your app will be live at a URL like `https://predictator.vercel.app`!
+Your app will be live at `https://your-app-name.herokuapp.com`
 
-## Deployment to Render (Recommended - Free)
+## Deployment to Render (Free)
 
 1. Create a Render account at https://render.com
 2. Connect your GitHub account
