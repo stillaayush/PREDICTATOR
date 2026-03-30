@@ -3,69 +3,80 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PREDICTATOR | Enterprise AI</title>
+    <title>PREDICTATOR | AI Market Terminal</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
     <style>
-        body { background-color: #0b0e11; color: #e2e8f0; font-family: sans-serif; overflow: hidden; }
-        ::-webkit-scrollbar { width: 6px; background: #0f172a; }
-        ::-webkit-scrollbar-thumb { background: #334155; border-radius: 3px; }
-        .ticker-item:hover { background: rgba(220, 38, 38, 0.1); border-left: 3px solid #dc2626; cursor: pointer; }
-        .toggle-checkbox:checked { right: 0; border-color: #22c55e; }
-        .toggle-checkbox:checked + .toggle-label { background-color: #22c55e; }
-        .chat-enter { animation: slideUp 0.3s ease-out forwards; }
+        body { background-color: #030303; color: #e2e8f0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; overflow: hidden; }
+        ::-webkit-scrollbar { width: 4px; background: #0a0a0a; }
+        ::-webkit-scrollbar-thumb { background: #dc2626; border-radius: 2px; }
+        .ticker-item { transition: all 0.2s ease-in-out; border-left: 2px solid transparent; }
+        .ticker-item:hover { background: linear-gradient(90deg, rgba(220, 38, 38, 0.15) 0%, rgba(0,0,0,0) 100%); border-left: 2px solid #dc2626; cursor: pointer; }
+        .toggle-checkbox:checked { right: 0; border-color: #dc2626; }
+        .toggle-checkbox:checked + .toggle-label { background-color: #dc2626; }
+        .chat-enter { animation: slideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
         @keyframes slideUp { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
-        .chip { background: #1f2937; padding: 4px 10px; border-radius: 12px; font-size: 11px; cursor: pointer; transition: 0.2s; border: 1px solid #374151; }
-        .chip:hover { background: #3b82f6; border-color: #60a5fa; color: white;}
+        .chip { background: #111; padding: 6px 12px; border-radius: 4px; font-size: 11px; font-weight: bold; cursor: pointer; transition: 0.2s; border: 1px solid #333; color: #888; text-transform: uppercase;}
+        .chip:hover { background: #dc2626; border-color: #ef4444; color: white;}
     </style>
 </head>
 <body class="flex h-screen">
 
-    <div class="w-72 bg-[#0f1216] border-r border-gray-800 flex flex-col hidden md:flex">
-        <div class="p-4 border-b border-gray-800 flex items-center justify-between">
+    <div class="w-72 bg-[#0a0a0a] border-r border-red-900/30 flex flex-col hidden md:flex shadow-2xl z-10">
+        <div class="p-5 border-b border-red-900/30 flex items-center justify-between bg-black">
             <span class="text-red-600 font-black text-2xl tracking-tighter">PREDICTATOR</span>
-            <span class="bg-gray-800 text-gray-400 text-[9px] px-2 py-1 rounded font-bold">v3.0</span>
+            <span class="bg-red-900/20 text-red-500 text-[10px] px-2 py-1 rounded font-bold uppercase tracking-widest border border-red-900/50">v3.0</span>
         </div>
         
         <div id="sidebar-ai" class="flex-1 overflow-y-auto">
-            <div class="px-6 py-2 text-xs font-bold text-gray-500 mt-2">FOUNDER'S PICK</div>
-            <div onclick="loadStock('ODDSOCEAN')" class="ticker-item px-6 py-3 border-b border-gray-800/50 flex justify-between bg-red-900/10">
-                <span class="font-bold text-red-500">ODDSOCEAN</span><span class="text-green-400 text-xs font-bold">🚀 MOON</span>
+            <div class="px-6 py-3 text-[10px] font-black text-gray-600 uppercase tracking-widest mt-2">Founder's Alpha</div>
+            <div onclick="loadStock('ODDSOCEAN')" class="ticker-item px-6 py-3 border-b border-gray-900 flex justify-between">
+                <span class="font-bold text-gray-200">ODDSOCEAN</span><span class="text-red-500 text-xs font-bold">🚀 MOON</span>
             </div>
-            <div class="px-6 py-2 text-xs font-bold text-gray-500 mt-2">GLOBAL MARKETS</div>
-            <div onclick="loadStock('AAPL')" class="ticker-item px-6 py-3 border-b border-gray-800/50 flex justify-between"><span>AAPL</span><span class="text-green-500 text-xs">BUY</span></div>
-            <div onclick="loadStock('NVDA')" class="ticker-item px-6 py-3 border-b border-gray-800/50 flex justify-between"><span>NVDA</span><span class="text-purple-500 text-xs">AI</span></div>
-            <div onclick="loadStock('SRMIST')" class="ticker-item px-6 py-3 border-b border-gray-800/50 flex justify-between"><span>SRMIST</span><span class="text-yellow-500 text-xs">EDU</span></div>
+            <div class="px-6 py-3 text-[10px] font-black text-gray-600 uppercase tracking-widest mt-2">Global Equities</div>
+            <div onclick="loadStock('AAPL')" class="ticker-item px-6 py-3 border-b border-gray-900 flex justify-between">
+                <span class="text-gray-300 font-medium">AAPL</span><span class="text-gray-500 text-xs">BUY</span>
+            </div>
+            <div onclick="loadStock('NVDA')" class="ticker-item px-6 py-3 border-b border-gray-900 flex justify-between">
+                <span class="text-gray-300 font-medium">NVDA</span><span class="text-gray-500 text-xs">HOLD</span>
+            </div>
+            <div onclick="loadStock('SRMIST')" class="ticker-item px-6 py-3 border-b border-gray-900 flex justify-between">
+                <span class="text-gray-300 font-medium">SRMIST</span><span class="text-yellow-600 text-xs">AIML</span>
+            </div>
         </div>
 
         <div id="sidebar-trading" class="hidden flex-1 flex flex-col">
-            <div class="p-6 bg-gray-900/50 border-b border-gray-800">
-                <div class="text-xs text-gray-500 font-bold">CASH BALANCE</div>
-                <div id="walletDisplay" class="text-2xl text-green-400 font-mono font-bold">$10,000.00</div>
-                <div class="text-xs text-gray-500 font-bold mt-4">INVESTED CAPITAL</div>
-                <div id="investedDisplay" class="text-lg text-blue-400 font-mono font-bold">$0.00</div>
+            <div class="p-6 bg-gradient-to-b from-black to-[#0a0a0a] border-b border-red-900/30">
+                <div class="text-[10px] text-gray-500 font-bold tracking-widest uppercase">Available Liquidity</div>
+                <div id="walletDisplay" class="text-3xl text-red-500 font-mono font-bold mt-1">$10,000.00</div>
+                <div class="text-[10px] text-gray-500 font-bold tracking-widest uppercase mt-5">Allocated Capital</div>
+                <div id="investedDisplay" class="text-xl text-gray-300 font-mono font-medium mt-1">$0.00</div>
             </div>
-            <div class="px-6 py-2 text-xs font-bold text-gray-500 mt-2">ACTIVE POSITIONS</div>
-            <div id="holdingsList" class="flex-1 px-6 overflow-y-auto text-sm space-y-2 py-2">No active positions.</div>
+            <div class="px-6 py-4 text-[10px] font-black text-gray-600 uppercase tracking-widest">Active Positions</div>
+            <div id="holdingsList" class="flex-1 px-6 overflow-y-auto text-sm space-y-2">
+                <div class="text-gray-700 text-xs italic">Awaiting execution...</div>
+            </div>
         </div>
     </div>
 
-    <div class="flex-1 flex flex-col relative">
-        <div class="h-16 border-b border-gray-800 flex items-center px-6 justify-between bg-[#0b0e11]">
-            <div class="flex items-center gap-4">
-                <h1 id="stockName" class="text-2xl font-bold text-white">LOADING...</h1>
-                <span id="stockPrice" class="text-green-500 font-mono text-xl">---</span>
+    <div class="flex-1 flex flex-col relative bg-[#050505]">
+        <div class="h-16 border-b border-red-900/30 flex items-center px-8 justify-between bg-black">
+            <div class="flex items-center gap-6">
+                <h1 id="stockName" class="text-2xl font-black text-white tracking-tight">SYSTEM STANDBY</h1>
+                <span id="stockPrice" class="text-red-500 font-mono text-xl font-medium">---</span>
             </div>
             
             <div class="flex items-center gap-4">
-                <input type="text" id="search" placeholder="SYMBOL" class="bg-gray-800 text-white px-3 py-1 rounded w-24 border border-gray-600 uppercase focus:border-blue-500 focus:outline-none">
-                <button onclick="loadStock(document.getElementById('search').value)" class="bg-blue-600 hover:bg-blue-500 text-white px-4 py-1 rounded font-bold text-sm transition">SEARCH</button>
+                <div class="flex bg-[#111] border border-gray-800 rounded-md overflow-hidden focus-within:border-red-600 transition">
+                    <input type="text" id="search" placeholder="TICKER" class="bg-transparent text-white px-4 py-1.5 w-24 uppercase text-sm focus:outline-none">
+                    <button onclick="loadStock(document.getElementById('search').value)" class="bg-red-700 hover:bg-red-600 text-white px-4 py-1.5 font-bold text-xs tracking-wider transition">ANALYZE</button>
+                </div>
                 
-                <div class="flex items-center ml-4 border-l border-gray-700 pl-4">
-                    <span class="text-xs font-bold mr-2 text-red-500" id="modeLabel">AI MODE</span>
-                    <div class="relative inline-block w-10 mr-2 align-middle select-none transition duration-200 ease-in">
-                        <input type="checkbox" name="toggle" id="modeToggle" class="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 appearance-none cursor-pointer" onclick="switchMode()"/>
-                        <label for="toggle" class="toggle-label block overflow-hidden h-6 rounded-full bg-red-900 cursor-pointer"></label>
+                <div class="flex items-center ml-4 border-l border-gray-800 pl-6">
+                    <span class="text-[10px] font-black tracking-widest mr-3 text-red-500 uppercase transition" id="modeLabel">Logic Engine</span>
+                    <div class="relative inline-block w-10 align-middle select-none">
+                        <input type="checkbox" name="toggle" id="modeToggle" class="toggle-checkbox absolute block w-5 h-5 rounded-full bg-white border-4 appearance-none cursor-pointer transition-all duration-300" onclick="switchMode()"/>
+                        <label for="toggle" class="toggle-label block overflow-hidden h-5 rounded-full bg-gray-800 cursor-pointer transition-colors duration-300"></label>
                     </div>
                 </div>
             </div>
@@ -73,24 +84,234 @@
 
         <div class="flex-1 p-2 relative">
             <div id="chart" class="w-full h-full"></div>
-            <div id="loader" class="absolute inset-0 bg-[#0b0e11] bg-opacity-90 flex flex-col items-center justify-center z-40 hidden">
-                <div class="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-red-600 mb-4"></div>
-                <div class="text-red-500 font-mono tracking-widest text-sm">FETCHING YFINANCE DATA...</div>
+            <div id="loader" class="absolute inset-0 bg-[#050505]/95 flex flex-col items-center justify-center z-40 hidden backdrop-blur-sm">
+                <div class="animate-spin rounded-full h-12 w-12 border-t-2 border-r-2 border-red-600 mb-6"></div>
+                <div class="text-red-500 font-mono tracking-widest text-xs uppercase">Compiling Market Data...</div>
             </div>
         </div>
 
-        <div id="panel-ai" class="h-44 border-t border-gray-800 bg-[#0f1216] grid grid-cols-4 divide-x divide-gray-800">
-            <div class="p-4 flex flex-col justify-center items-center">
-                <div class="text-gray-500 text-[10px] uppercase font-bold tracking-widest">RF Prediction Target</div>
-                <div id="aiPred" class="text-4xl font-mono text-white mt-1 font-bold">---</div>
+        <div id="panel-ai" class="h-44 border-t border-red-900/30 bg-[#080808] grid grid-cols-4 divide-x divide-gray-900">
+            <div class="p-6 flex flex-col justify-center">
+                <div class="text-gray-500 text-[10px] uppercase font-bold tracking-widest mb-1">Algorithmic Target</div>
+                <div id="aiPred" class="text-4xl font-mono text-white font-light">---</div>
             </div>
-            <div class="p-4 flex flex-col justify-center items-center">
-                <div class="text-gray-500 text-[10px] uppercase font-bold tracking-widest">Model R² Confidence</div>
-                <div id="aiConf" class="text-4xl font-mono text-blue-400 mt-1 font-bold">---</div>
+            <div class="p-6 flex flex-col justify-center">
+                <div class="text-gray-500 text-[10px] uppercase font-bold tracking-widest mb-1">Ensemble Confidence</div>
+                <div id="aiConf" class="text-4xl font-mono text-gray-400 font-light">---</div>
             </div>
-            <div class="p-4 flex flex-col justify-center items-center">
-                <div class="text-gray-500 text-[10px] uppercase font-bold tracking-widest">NLP Market Sentiment</div>
-                <div id="aiSent" class="text-2xl font-bold text-gray-300 mt-2 uppercase tracking-wide">---</div>
+            <div class="p-6 flex flex-col justify-center">
+                <div class="text-gray-500 text-[10px] uppercase font-bold tracking-widest mb-1">Sentiment Polarity</div>
+                <div id="aiSent" class="text-xl font-bold text-gray-600 mt-2 uppercase tracking-widest">---</div>
             </div>
-            <div class="p-4 flex flex-col justify-center px-8">
-                <div class="text-gray-50
+            <div class="p-6 flex flex-col justify-center">
+                <div class="text-gray-500 text-[10px] uppercase font-bold tracking-widest mb-3 border-b border-gray-800 pb-2">Quantitative Inputs</div>
+                <div class="flex justify-between items-center mb-2">
+                    <span class="text-xs text-gray-500 font-medium">7-Day MA:</span>
+                    <span id="metricMA7" class="text-sm font-mono text-gray-300">---</span>
+                </div>
+                <div class="flex justify-between items-center">
+                    <span class="text-xs text-gray-500 font-medium">Volume:</span>
+                    <span id="metricVol" class="text-sm font-mono text-gray-300">---</span>
+                </div>
+            </div>
+        </div>
+
+        <div id="panel-trading" class="hidden h-44 border-t border-red-900/30 bg-[#080808] flex flex-col items-center justify-center gap-6">
+            <div class="text-red-500 font-black tracking-widest text-xs uppercase bg-red-900/10 px-4 py-1.5 rounded border border-red-900/30">Execution Terminal</div>
+            <div class="flex gap-4 items-center">
+                <div class="flex flex-col">
+                    <span class="text-gray-600 text-[10px] uppercase font-bold mb-1 ml-1">Units</span>
+                    <input type="number" id="qty" value="1" min="1" class="bg-[#111] text-white px-4 py-3 rounded text-center border border-gray-800 text-lg w-28 focus:border-red-500 focus:outline-none transition">
+                </div>
+                <div class="w-px h-12 bg-gray-800 mx-4 mt-4"></div>
+                <button onclick="trade('buy')" class="bg-gray-800 hover:bg-green-700 text-white px-12 py-3 rounded mt-4 font-black text-lg transition border border-gray-700 hover:border-green-600">BUY</button>
+                <button onclick="trade('sell')" class="bg-gray-800 hover:bg-red-700 text-white px-12 py-3 rounded mt-4 font-black text-lg transition border border-gray-700 hover:border-red-600">SELL</button>
+            </div>
+        </div>
+    </div>
+
+    <div onclick="toggleChat()" class="fixed bottom-6 right-6 w-14 h-14 bg-red-700 rounded-full flex items-center justify-center cursor-pointer shadow-2xl shadow-red-900/20 z-[9999] hover:bg-red-600 transition hover:scale-105 border border-red-500">
+        <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"></path></svg>
+    </div>
+    
+    <div id="chatBox" class="hidden fixed bottom-24 right-6 w-[360px] h-[480px] bg-[#0a0a0a] border border-red-900/30 rounded shadow-2xl z-[9999] flex flex-col chat-enter overflow-hidden">
+        <div class="h-14 bg-black border-b border-red-900/30 flex items-center px-5 justify-between">
+            <div class="flex items-center gap-3">
+                <div class="w-2 h-2 rounded-full bg-red-600 animate-pulse"></div>
+                <span class="font-black text-white text-xs tracking-widest uppercase">Predictator Logic</span>
+            </div>
+            <span onclick="toggleChat()" class="cursor-pointer text-gray-500 hover:text-white text-lg transition">✕</span>
+        </div>
+        
+        <div id="messages" class="flex-1 overflow-y-auto p-5 space-y-4 text-sm text-gray-300">
+            <div class="flex justify-start"><div class="bg-[#111] border border-gray-800 p-3 rounded-tr-lg rounded-br-lg rounded-bl-lg max-w-[85%] text-xs leading-relaxed">System Online. Awaiting queries.</div></div>
+        </div>
+
+        <div class="px-4 py-3 bg-[#050505] border-t border-gray-900 flex gap-2 overflow-x-auto whitespace-nowrap hide-scroll">
+            <button onclick="quickAsk('Analyze risk level')" class="chip">Risk Level?</button>
+            <button onclick="quickAsk('Should I execute a buy?')" class="chip">Buy Signal?</button>
+            <button onclick="quickAsk('What is ODDSOCEAN?')" class="chip">ODDSOCEAN</button>
+        </div>
+
+        <div class="p-3 bg-black border-t border-red-900/30 flex items-center gap-2">
+            <input id="chatInput" type="text" placeholder="Enter query..." class="flex-1 bg-[#111] border border-gray-800 rounded text-white px-4 py-2 text-xs focus:outline-none focus:border-red-700 transition" onkeypress="if(event.key==='Enter') sendChat()">
+            <button onclick="sendChat()" class="bg-red-700 hover:bg-red-600 text-white p-2 rounded transition">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+            </button>
+        </div>
+    </div>
+
+    <script>
+        let currentPrice = 0;
+        let chartObj = null;
+        let isTradingMode = false;
+        let loadTimeout = null;
+
+        window.onload = function() { loadStock('ODDSOCEAN'); };
+
+        function showLoader() {
+            const loader = document.getElementById('loader');
+            loader.classList.remove('hidden');
+            if(loadTimeout) clearTimeout(loadTimeout);
+            loadTimeout = setTimeout(() => { loader.classList.add('hidden'); }, 6000);
+        }
+
+        function hideLoader() {
+            document.getElementById('loader').classList.add('hidden');
+            if(loadTimeout) clearTimeout(loadTimeout);
+        }
+
+        async function loadStock(ticker) {
+            if(!ticker) return;
+            ticker = ticker.toUpperCase();
+            showLoader();
+            
+            try {
+                const res = await fetch('/predict', { 
+                    method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({ticker: ticker}) 
+                });
+                const response = await res.json();
+                
+                if(response.status === 'success') {
+                    const d = response.data;
+                    currentPrice = d.current_price;
+                    document.getElementById('stockName').innerText = d.ticker;
+                    document.getElementById('stockPrice').innerText = "$" + d.current_price.toFixed(2);
+                    document.getElementById('aiPred').innerText = "$" + d.prediction.toFixed(2);
+                    document.getElementById('aiConf').innerText = d.accuracy + "%";
+                    
+                    const sentEl = document.getElementById('aiSent');
+                    sentEl.innerText = d.sentiment;
+                    if(d.sentiment.includes("POSITIVE") || d.sentiment.includes("MOON")) sentEl.className = "text-xl font-black text-red-500 mt-2 uppercase tracking-widest";
+                    else if(d.sentiment.includes("NEGATIVE")) sentEl.className = "text-xl font-black text-gray-500 mt-2 uppercase tracking-widest";
+                    else sentEl.className = "text-xl font-bold text-gray-400 mt-2 uppercase tracking-widest";
+
+                    document.getElementById('metricMA7').innerText = d.ma7;
+                    document.getElementById('metricVol').innerText = d.vol;
+
+                    renderChart(d.chart_data);
+                }
+            } catch(e) { console.error("Fetch Error:", e); }
+            finally { hideLoader(); }
+        }
+
+        function renderChart(data) {
+            if(chartObj) chartObj.destroy();
+            chartObj = new ApexCharts(document.querySelector("#chart"), {
+                series: [{data: data}],
+                chart: {type: 'candlestick', height: '100%', background: 'transparent', toolbar: {show:false}, animations: {enabled: true, dynamicAnimation: {speed: 500}}},
+                theme: {mode: 'dark'},
+                xaxis: {type: 'datetime', labels: {style: {colors: '#333'}}, axisBorder: {color: '#333'}, axisTicks: {color: '#333'}},
+                yaxis: {labels: {style: {colors: '#555'}, formatter: (value) => { return "$" + value.toFixed(2) }}},
+                plotOptions: {candlestick: {colors: {upward: '#dc2626', downward: '#1f2937'}, wick: {useFillColor: true}}},
+                grid: { borderColor: '#111' }
+            });
+            chartObj.render();
+        }
+
+        async function trade(action) {
+            const ticker = document.getElementById('stockName').innerText;
+            const qty = document.getElementById('qty').value;
+            
+            try {
+                const res = await fetch('/trade', { 
+                    method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({action, ticker, price: currentPrice, quantity: qty}) 
+                });
+                const data = await res.json();
+                
+                const btn = event.target;
+                const originalText = btn.innerText;
+                btn.innerText = data.status === 'success' ? "EXECUTED" : "REJECTED";
+                setTimeout(() => { btn.innerText = originalText; }, 1000);
+
+                if(data.status === 'success') updatePortfolio();
+                else alert(data.msg);
+            } catch(e) { console.error(e); }
+        }
+
+        async function updatePortfolio() {
+            const res = await fetch('/portfolio');
+            const data = await res.json();
+            document.getElementById('walletDisplay').innerText = "$" + data.balance.toFixed(2);
+            document.getElementById('investedDisplay').innerText = "$" + data.invested.toFixed(2);
+            
+            const list = document.getElementById('holdingsList');
+            list.innerHTML = "";
+            if(Object.keys(data.holdings).length === 0) {
+                list.innerHTML = "<div class='text-gray-700 text-xs italic'>Awaiting execution...</div>";
+                return;
+            }
+            for(const [t, q] of Object.entries(data.holdings)) {
+                list.innerHTML += `<div class="flex justify-between items-center border-b border-gray-900 pb-2 pt-2"><span class="font-bold text-gray-300">${t}</span><span class="bg-red-900/10 border border-red-900/30 text-red-500 px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-widest">${q} Units</span></div>`;
+            }
+        }
+
+        function toggleChat() { document.getElementById('chatBox').classList.toggle('hidden'); }
+        function quickAsk(text) { document.getElementById('chatInput').value = text; sendChat(); }
+
+        async function sendChat() {
+            const inp = document.getElementById('chatInput');
+            const msg = inp.value;
+            if(!msg) return;
+            
+            const box = document.getElementById('messages');
+            box.innerHTML += `<div class="flex justify-end"><div class="bg-red-900/40 border border-red-900/50 text-white p-3 rounded-tl-lg rounded-tr-lg rounded-bl-lg max-w-[85%] text-xs">${msg}</div></div>`;
+            inp.value = "";
+            box.scrollTop = box.scrollHeight;
+            
+            try {
+                const res = await fetch('/chat', { 
+                    method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({message: msg}) 
+                });
+                const data = await res.json();
+                
+                setTimeout(() => {
+                    box.innerHTML += `<div class="flex justify-start"><div class="bg-[#111] border border-gray-800 text-gray-300 p-3 rounded-tr-lg rounded-br-lg rounded-bl-lg max-w-[85%] text-xs leading-relaxed">${data.response}</div></div>`;
+                    box.scrollTop = box.scrollHeight;
+                }, 300); 
+                
+            } catch(e) { console.error(e); }
+        }
+
+        function switchMode() {
+            isTradingMode = !isTradingMode;
+            if(isTradingMode) {
+                document.getElementById('sidebar-ai').classList.add('hidden');
+                document.getElementById('sidebar-trading').classList.remove('hidden');
+                document.getElementById('panel-ai').classList.add('hidden');
+                document.getElementById('panel-trading').classList.remove('hidden');
+                document.getElementById('modeLabel').innerText = "Execution Mode";
+                document.getElementById('modeLabel').classList.replace('text-red-500', 'text-gray-500');
+                updatePortfolio();
+            } else {
+                document.getElementById('sidebar-ai').classList.remove('hidden');
+                document.getElementById('sidebar-trading').classList.add('hidden');
+                document.getElementById('panel-ai').classList.remove('hidden');
+                document.getElementById('panel-trading').classList.add('hidden');
+                document.getElementById('modeLabel').innerText = "Logic Engine";
+                document.getElementById('modeLabel').classList.replace('text-gray-500', 'text-red-500');
+            }
+        }
+    </script>
+</body>
+</html>
