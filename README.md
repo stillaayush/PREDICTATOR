@@ -4,9 +4,15 @@
 ![Flask](https://img.shields.io/badge/Flask-3.0.2-black?style=for-the-badge&logo=flask&logoColor=white)
 ![scikit-learn](https://img.shields.io/badge/scikit--learn-1.4.1-orange?style=for-the-badge&logo=scikit-learn&logoColor=white)
 ![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)
-![Status](https://img.shields.io/badge/Status-Active-success?style=for-the-badge)
+![Vercel](https://img.shields.io/badge/Vercel-Deployed-black?style=for-the-badge&logo=vercel&logoColor=white)
 
 > **Bridging the gap between complex algorithmic trading and retail investing through hybrid Artificial Intelligence.**
+
+## 🌐 Live Demo
+**Experience the AI Logic Engine here:** [https://predictator-six.vercel.app/](https://predictator-six.vercel.app/)
+*(Note: Initial quantitative analysis may take up to 10 seconds to compile due to serverless cloud limits. For zero-latency presentations, local deployment is recommended).*
+
+---
 
 **PREDICTATOR** is a full-stack, AI-powered stock market forecasting terminal and simulated trading environment. Developed as a major academic project for the **AIML Specialization** at **SRM Institute of Science and Technology**, it leverages Ensemble Machine Learning and Natural Language Processing (NLP) to decode market structure and provide actionable, probabilistic insights.
 
@@ -42,7 +48,7 @@
 
 ## 🚀 Installation & Setup
 
-Follow these steps to deploy the PREDICTATOR logic engine on your local machine.
+Follow these steps to deploy the PREDICTATOR logic engine on your local machine for zero-latency performance.
 
 **1. Clone the repository:**
 ```bash
